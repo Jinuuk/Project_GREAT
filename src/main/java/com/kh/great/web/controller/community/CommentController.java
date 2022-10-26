@@ -131,17 +131,13 @@ public class CommentController {
     //답댓글이 남아 있지 않은 경우
     if (cntOfChildrenComments == 0) {
       Long pCommentNum = commentSVC.find(commentNum).get().getPCommentNum();
-      
       commentSVC.delete(commentNum);
-
       if (commentSVC.countOfChildrenComments(pCommentNum) == 0
           && commentSVC.find(pCommentNum).get().getCommentContents().equals("!DELETEDCOMMENT!")) {
         commentSVC.delete(pCommentNum);
       }
-
       return ApiResponse.createApiResMsg("00", "성공", null);
     }
-
     //답댓글이 남아있는 경우
     commentSVC.updateToDeletedComment(commentNum);
     return ApiResponse.createApiResMsg("00", "성공", cntOfChildrenComments);

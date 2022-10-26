@@ -33,19 +33,19 @@ public class ArticleController {
   private final ArticleSVC articleSVC;
 
   @Autowired
-  @Qualifier("fc10") //동일한 타입의 객체가 여러개있을때 빈이름을 명시적으로 지정해서 주입받을때
+  @Qualifier("fc10")
   private FindCriteria fc;
 
   //커뮤니티 게시글 목록 조회
   @GetMapping({"/list",
       "/list/{reqPage}",
-      "/list/{reqPage}//", //?
+      "/list/{reqPage}//",
       "/list/{reqPage}/{searchType}/{keyword}"})
   public String board(
       @PathVariable(required = false) Optional<Integer> reqPage,
       @PathVariable(required = false) Optional<String> searchType,
       @PathVariable(required = false) Optional<String> keyword,
-      @RequestParam(required = false) Optional<String> category, //왜 카테고리만 @RequestParam?
+      @RequestParam(required = false) Optional<String> category,
       Model model) {
     log.info("/list 요청됨{},{},{},{}", reqPage, searchType, keyword, category);
 
