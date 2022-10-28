@@ -19,12 +19,12 @@ public class Comment {
   private Long pCommentNum;         //  p_comment_num        number(6),  -- 부모 댓글 번호
   private Long step;                // 댓글 단계
   private Long commentOrder;        // 댓글 순서
-  private String pCommentNickname;  // 부모 댓글 닉네임
+  private String pCommentNickname;  // 부모 댓글 닉네임 *불필요
   private Long memNumber;           //  mem_number           number(6),  -- 회원 번호
   private String commentContents;   //  comment_contents     clob,       -- 댓글 내용
   @DateTimeFormat(pattern = "yyyy.MM.dd. HH:mm")
   private LocalDateTime createDate; //  create_date          date,       -- 댓글 생성일
-  private String reply;             // 답글 여부
+  private String reply;             // 답글 여부  *불필요
   private Member member;
   private UploadFile attachFile;
 }

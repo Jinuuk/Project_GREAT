@@ -187,7 +187,6 @@
                   
                 `;
               });
-              //console.log(result.join(''));
               document.querySelector('#commentList').innerHTML=result.join('');
               commentCountFnc();
           }else{
@@ -228,6 +227,10 @@
       console.log("댓글 등록 버튼 클릭!")
       //console.log(e.target.closest('li'));
       //1)유효성 체크
+      if(commentInputBox.value.replace(" ","").length == 0){
+        alert('내용을 입력해주세요.');
+        return;
+      }
       //2)입력 데이터 가져오기
       commentAddForm.append('articleNum',id);
       commentAddForm.append('commentGroup','');
@@ -252,7 +255,6 @@
       fileName.value='';
       imageFile.type ='';
       imageFile.type='file';
-
     });
 
     //댓글 등록 함수
@@ -321,6 +323,10 @@
           console.log(e.target.closest('li').previousSibling.id);
           console.log(e.target.closest('li').previousSibling.dataset.commentGroup);
           //1)유효성 체크
+          if(commentReplyTextarea.value.replace(" ","").length == 0){
+            alert('내용을 입력해주세요.');
+            return;
+          }
           //2)입력 데이터 가져오기
           commentAddForm.append('articleNum',id);
           commentAddForm.append('commentGroup',e.target.closest('li').previousSibling.dataset.commentGroup);
@@ -415,6 +421,10 @@
           editSaveBtn?.addEventListener('click',e=>{
             e.preventDefault();
             //1)유효성 체크
+            if(commentEditTextarea.value.replace(" ","").length == 0){
+              alert('내용을 입력해주세요.');
+              return;
+            }            
             //2)입력 데이터 가져오기 (댓글 번호, 댓글 내용)
             commentEditForm.append('commentNum',commentNum);
             commentEditForm.append('commentContents',commentEditTextarea.value.replace(/(?:\r\n|\r|\n)/g, '<br>'));

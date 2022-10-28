@@ -102,21 +102,18 @@ public class CommentDAOImpl implements CommentDAO {
         comment.setCommentOrder(maxCommentOrder(comment) + 1);
         //step이 2이상인 경우
       } else {
-        //같은 부모 댓글을 가진 동일 step 중 최고 순서보다 큰 순서 + 1
+        //같은 부모 댓글을 가진 동일 step의 댓글 중 최고 순서보다 큰 순서 + 1
         changeCommentOrder(comment, maxCommentOrderInSameParent(comment));
-        //순서 = 같은 부모 댓글을 가진 동일 step 중 최고 순서 + 1
+        //순서 = 같은 부모 댓글을 가진 동일 step의 댓글 중 최고 순서 + 1
         comment.setCommentOrder(maxCommentOrderInSameParent(comment) + 1);
       }
     }
 
     StringBuffer sql = new StringBuffer();
-
     sql.append("insert into comments ");
     sql.append("(article_num, comment_group, comment_num, p_comment_num, step, comment_order, ");
     sql.append("p_comment_nickname, mem_number, comment_contents, create_date, reply) ");
     sql.append("values (?,?,?,?,?,?,?,?,?,sysdate, ?) ");
-
-    log.info("쿼리 삽입하기 전 코멘트 내용 : {}", comment);
 
     int affectedRow = jt.update(sql.toString(),
         comment.getArticleNum(),
@@ -137,9 +134,7 @@ public class CommentDAOImpl implements CommentDAO {
   @Override
   public Long maxCommentOrder(Comment comment) {
     String sql = "select max(comment_order) from comments where article_num = ? and comment_group = ? ";
-
     Long maxCommentOrder = jt.queryForObject(sql, Long.class,comment.getArticleNum(),comment.getCommentGroup());
-
     return maxCommentOrder;
   }
 
@@ -150,11 +145,10 @@ public class CommentDAOImpl implements CommentDAO {
     sql.append("select max(comment_order) from comments ");
     sql.append("where article_num = ? and comment_group = ? and p_comment_num = ? and step = ? ");
 
-    Long maxCommentOrderInSameParent = jt.queryForObject(sql.toString(), Long.class, comment.getArticleNum(), comment.getCommentGroup(),
-                                                                                     comment.getPCommentNum(), comment.getStep());
-    log.info("코멘트 : {}",comment);
-    log.info("과연 : {}",maxCommentOrderInSameParent);
-    //만약 은 부모 댓글을 가진 동일 step 중 최고 순서가 null이라면 부모 댓글 순서 반환
+    Long maxCommentOrderInSameParent = jt.queryForObject(sql.toString(), Long.class, comment.getArticleNum(),
+                                                         comment.getCommentGroup(), comment.getPCommentNum(), comment.getStep());
+
+    //만약 부모 댓글을 가진 동일 step 중 최고 순서가 null이라면 부모 댓글의 순서 반환
     if (maxCommentOrderInSameParent == null) {
       maxCommentOrderInSameParent = find(comment.getPCommentNum()).get().getCommentOrder();
     }
